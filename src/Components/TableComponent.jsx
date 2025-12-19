@@ -1,3 +1,4 @@
+import { RowContext, ThemeCoContext, ThemeContext } from "../State/theme";
 import { Delete, Edit, Visibility } from "@mui/icons-material";
 import {
   Box,
@@ -10,9 +11,22 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React from "react";
+import { useContext } from "react";
 
 function TableComponent({ rows }) {
+  const { viewEdit, setViewEdit } = useContext(ThemeContext);
+  const { viewContent, setViewContent } = useContext(ThemeCoContext);
+  const { setRowValue } = useContext(RowContext);
+
+  const handleEdit = (row) => {
+      setViewEdit(viewEdit === "none" ? "flex" : "none");
+      setRowValue(row);
+
+  };
+  const handleVisibility = (row) => {
+    setViewContent(viewContent === "none" ? "flex" : "none");
+    setRowValue(row);
+  };
   return (
     <Box
       sx={{
@@ -74,7 +88,11 @@ function TableComponent({ rows }) {
                 <TableCell align="right">{row.date}</TableCell>
                 <TableCell align="right">{row.datesOfActive}</TableCell>
                 <TableCell align="right">
-                  <IconButton >
+                  <IconButton
+                    onClick={() => {
+                      handleEdit(row);
+                    }}
+                  >
                     <Edit />
                   </IconButton>
                   &nbsp;
@@ -83,7 +101,11 @@ function TableComponent({ rows }) {
                   </IconButton>
                   &nbsp;
                   <IconButton>
-                    <Visibility />
+                    <Visibility
+                      onClick={() => {
+                        handleVisibility(row);
+                      }}
+                    />
                   </IconButton>
                   &nbsp;
                 </TableCell>
